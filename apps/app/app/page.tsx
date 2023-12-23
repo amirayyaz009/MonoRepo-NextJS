@@ -1,4 +1,5 @@
 export default async function Index() {
+  console.log(process.env.POSTGRES_URL)
   return (
     <div>
       <div className="wrapper">
