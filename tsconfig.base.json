@@ -14,7 +14,15 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@next-mono/bot": ["packages/bot/src/index.ts"],
+      "@next-mono/db": ["packages/db/src/index.ts"],
+      "@next-mono/emails": ["packages/emails/src/index.ts"],
+      "@next-mono/hasher": ["packages/hasher/src/index.ts"],
+      "@next-mono/queue": ["packages/queue/src/index.ts"],
+      "@next-mono/twilio": ["packages/twilio/src/index.ts"],
+      "@next-mono/utils": ["packages/utils/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
