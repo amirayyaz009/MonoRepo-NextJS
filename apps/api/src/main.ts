@@ -1,21 +1,37 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import express from 'express';
-import * as path from 'path';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
 
-const app = express();
+import { typeDefs } from './graphql/type-defs';
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+async function startServer() {
+  const app = express();
 
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to api!' });
-});
+  const server = new ApolloServer({
+    typeDefs: typeDefs,
+    resolvers: {
+      Todo: {
+        user: () => ({ name: 'User 1' }),
+      },
+      Query: {
+        getTodos: () => ({ title: 'Do Something' }),
+        getAllUsers: () => [{ name: 'User 1' }],
+        getUser: () => ({ name: 'User 1' }),
+      },
+    },
+  });
 
-const port = process.env.PORT || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
-});
-server.on('error', console.error);
+  app.use(bodyParser.json());
+  app.use(cors());
+
+  await server.start();
+
+  app.use('/graphql', expressMiddleware(server));
+
+  const PORT = parseInt(process.env.PORT || '5000', 10);
+  app.listen(PORT, () => console.log(`Serevr Started at PORT ${PORT}`));
+}
+
+startServer();
